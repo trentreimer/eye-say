@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Eye Say</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <base href="https://lab.trentreimer.com/eye-say/">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="css/eye-type.css">
+        <link rel="stylesheet" href="css/safari.css">
+
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&family=DM+Mono&display=swap');
+
+            .hidden { display: none; }
+        </style>
+
+        <script type="text/javascript">
+            /**
+             * Apple has world-class engineering talent so we can only assume the reason Safari is perenially
+             * behind the competition in supporting W3C standards is because they don't care.
+             * Something as fundamental as reliably reporting the available window height is hardly
+             * beyond their reach and would certainly improve user experience.
+             *
+             * In which case, why not allow iOS users to install browser engines from someone who does care?
+             *
+             * iOS uses Safari's rendering and Javascript engines in the background NO MATTER WHCIH BROWSER
+             * you install. If that wasn't anti-competitive enough, they actively DISABLE some APIs when you
+             * use those other browsers.
+             *
+             * Safari has done the internet a world of good by breaking Internet Explorer's monopoly.
+             * They should not be working so hard to mimic it.
+             */
+
+            const safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+            if (safari) {
+                document.documentElement.classList.add('safari');
+            }
+
+            const windowHeight = function() { // Note: this only works on Safari because of safari.css
+                return safari ? document.body.getBoundingClientRect().height : window.innerHeight;
+            }
+
+            const windowWidth = function() {
+                return safari ? document.body.getBoundingClientRect().width : window.innerWidth;
+            }
+        </script>
+    </head>
+    <body>
+
+        <div id="message" class="middle"></div>
+
+        <div id="calibration-background" class="hidden"></div>
+        <div id="calibration-target" class="hidden"></div>
+
+        <script type="text/javascript" src="js/webgazer.js"></script>
+        <script type="text/javascript" src="js/eye-type.js"></script>
+
+    </body>
+</html>
