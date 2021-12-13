@@ -68,7 +68,7 @@ a {
     color: blue;
 }
 
-.main-links a {
+.main-links a:not(.hidden) {
     display: inline-block;
     padding: 5px 10px;
     margin-right: 10px;
