@@ -248,6 +248,8 @@
 
         html += '<div id="eye-msg-space">';
 
+
+
         html += '<div id="eye-msg-panel">';
         html += '<div id="eye-msg-charsets-parent">';
         html += '<div class="eye-msg-charsets">';
@@ -274,11 +276,13 @@
 
         html += '<div id="eye-msg"><div id="eye-msg-text"></div></div>'; // #eye-msg
 
+
         html += '<div id="eye-msg-menu">';
+        html += '<button class="quit"><i class="fas fa-chevron-left"></i> Exit</button>';
+        html += '<button class="recalibrate">Recalibrate</button>';
         html += '<div style="margin-right: 20px;">Speed <input type="number" class="interval" min="1" max="10" step="0.1" value="' + (charRotationPause / 1000) + '" style="width: 4em;"> seconds</div>';
-        html += '<button class="recalibrate"><i class="fas fa-bullseye"></i> Recalibrate</button>';
-        html += '<button class="quit">🛑 Quit</button>';
         html += '</div>'; // #eye-msg-menu
+
 
         html += '</div>'; // #eye-msg-space
 
