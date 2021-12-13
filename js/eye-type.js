@@ -106,7 +106,6 @@
         calibrationCallbackFunction = callbackFunction;
 
         setTimeout(function() {
-            //clearView();
             webgazer.clearGazeListener();
             webgazer.clearData();
         }, 0);
@@ -196,12 +195,6 @@
     const setRotationPause = function(ms = 1500) {
         if (parseInt(ms) >= 1000) charRotationPause = parseInt(ms);
     }
-
-    // Allow URL to set charRotationPause
-    {
-        const i = new URL(window.location).searchParams.get('pause');
-        if (i && parseInt(i) >= 1000) setRotationPause(i);    
-    }
     ///////////////////////////////////////////////////////////////
 
 
@@ -253,6 +246,8 @@
 
         let html = '<div id="eye-msg-background" class="clear">';
 
+        html += '<div id="eye-msg-space">';
+
         html += '<div id="eye-msg-panel">';
         html += '<div id="eye-msg-charsets-parent">';
         html += '<div class="eye-msg-charsets">';
@@ -284,6 +279,8 @@
         html += '<button class="recalibrate"><i class="fas fa-bullseye"></i> Recalibrate</button>';
         html += '<button class="quit">🛑 Quit</button>';
         html += '</div>'; // #eye-msg-menu
+
+        html += '</div>'; // #eye-msg-space
 
         html += '</div>'; // #eye-msg-background
 
@@ -442,7 +439,9 @@
 
         let pos;
 
-        if (data.x < windowWidth() * 0.75) {
+        let rightSide = document.getElementById('eye-msg-space').getBoundingClientRect().right * 0.75;
+
+        if (data.x < rightSide) {
             pos = 'left';
         } else {
             pos = 'right';
