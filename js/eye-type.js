@@ -443,7 +443,17 @@
 
         let pos;
 
-        let rightSide = document.getElementById('eye-msg-space').getBoundingClientRect().right * 0.75;
+        // Set the right-side / left-side demarcator
+        let rightSide;
+        {
+            const rect = document.getElementById('eye-msg-space').getBoundingClientRect();
+
+            if (rect.width < window.innerWidth) {
+                rightSide = rect.right * 0.85;
+            } else {
+                rightSide = rect.right * 0.75;
+            }
+        }
 
         if (data.x < rightSide) {
             pos = 'left';
