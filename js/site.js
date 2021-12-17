@@ -21,7 +21,7 @@
                 e.classList.remove('hidden');
             });
 
-            document.querySelectorAll('.typewriter-link').forEach(e => {
+            document.querySelectorAll('.typewriter-link, .demo-link').forEach(e => {
                 e.remove();
             });
         }

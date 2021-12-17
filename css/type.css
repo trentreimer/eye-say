@@ -1,0 +1,366 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    background: #000;
+    color: #fff;
+    font-size: 1.1rem;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hidden {
+    display: none;
+}
+
+.blink {
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    } 
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Hide the preview video */
+#webgazerVideoContainer {
+    user-select: none;
+    opacity: 0;
+}
+
+#webgazerVideoContainer.error {
+    opacity: 1;
+    z-index: 3;
+}
+
+#calibration-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    cursor: none;
+    z-index: 2;
+}
+
+#calibration-target {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    right: auto;
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+    border-radius: 50%;
+    border: 0px solid #fff;
+    background: red;
+    cursor: none;
+    z-index: 2;
+    transition: left var(--transition-time), top var(--transition-time);
+}
+
+#calibration-target.top-left {
+    top: 50px;
+    left: 50px;
+}
+
+#calibration-target.top-center {
+    top: 50px;
+    left: 50vw;
+}
+
+#calibration-target.top-right {
+    top: 50px;
+    left: calc(100vw - 50px);
+}
+
+#calibration-target.middle-left {
+    top: 50%;
+    left: 50px;
+}
+
+#calibration-target.middle-center {
+    top: 50%;
+    left: 50vw;
+}
+
+#calibration-target.middle-right {
+    top: 50%;
+    left: calc(100vw - 50px);
+}
+
+#calibration-target.bottom-left {
+    top: calc(100% - 50px);
+    left: 50px;
+}
+
+#calibration-target.bottom-center {
+    top: calc(100% - 50px);
+    left: 50%;
+}
+
+#calibration-target.bottom-right {
+    top: calc(100% - 50px);
+    left: calc(100vw - 50px);
+}
+
+#calibration-target.calibrating::after {
+    display: block;
+    content: '';
+    margin-top: -4px;
+    margin-left: -4px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: calibrating 1s 3 linear;
+}
+
+@keyframes calibrating {
+    0% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: #fff;
+    }
+
+    100% {
+        border-color: transparent;
+    }
+}
+
+#message {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    background: black;
+    color: #fff;
+    border-radius: 1.75rem;
+    padding: 1rem 1.5rem;
+    user-select: none;
+    z-index: 3;
+}
+
+#message.middle {
+    top: 50vh;
+    transform: translate(-50%, -50%);
+}
+
+#message.bottom {
+    top: auto;
+    bottom: 25px;
+}
+
+#message i.fas,
+#message i.far {
+    margin: 0 5px;
+}
+
+@media screen and (max-width: 500px) {
+    #message {
+        transform: none;
+        left: 5%;
+        width: 90%;
+        /*padding: 10px;*/
+    }
+}
+
+#sight-point {
+    position: absolute;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ddd;
+    opacity: .8;
+}
+
+#eye-msg-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s;
+    font-size: 1.75rem;
+    background: #000;
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    /*z-index: 2;*/
+}
+
+#eye-msg-background.clear {
+    opacity: 0;
+}
+
+#eye-msg-space {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    height: 100%;
+}
+
+@media screen and (min-width: 19in) {
+    #eye-msg-space {
+        max-width: 15in;
+    }
+}
+
+#eye-msg-panel {
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#eye-msg-charsets-parent {
+    width: 50%;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.eye-msg-charsets {
+    display: inline-block;
+    text-align: left;
+    color: #888;
+    margin: 10px 0 10px 10px;
+}
+
+.eye-msg-charsets:nth-of-type(n + 2):not(.wrapped) {
+    padding-left: 10px;
+    border-left: 1px solid #888;
+}
+
+.eye-msg-charsets:nth-of-type(n +2).wrapped {
+    margin-top: -10px;
+}
+
+.eye-msg-charset {
+}
+
+.eye-msg-charset span {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.2em 0.35em;
+}
+
+.eye-msg-charsets div.highlight span,
+.eye-msg-charsets span.highlight {
+    background: #404050;
+    color: #fff;
+}
+
+.eye-msg-charsets span.highlight {
+    border-radius: 0.15em;
+}
+
+.eye-msg-charsets div.highlight > :first-child {
+    border-top-left-radius: 0.15em;
+    border-bottom-left-radius: 0.15em;
+}
+
+.eye-msg-charsets div.highlight > :last-child {
+    border-top-right-radius: 0.15em;
+    border-bottom-right-radius: 0.15em;
+}
+
+#eye-msg {
+    flex-grow: 1;
+}
+
+#eye-msg hr {
+    border: none;
+    margin: 15px auto;
+    width: 100%;
+    height: 4px;
+    background: #000;
+}
+
+#eye-msg-text {
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: calc(50% - 10px);
+    height: calc(100% - 10px);
+    background: #e0e0e0;
+    color: #000;
+    box-shadow: 0 0 5px #000 inset;
+    border-radius: 0em;
+}
+
+#eye-msg-text::after {
+    content: '_';
+    color: transparent;
+    margin-left: 4px;
+    border-left: 2px solid #888;
+}
+
+#eye-msg-menu {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+button, input, select {
+    font-size: inherit;
+}
+
+#eye-msg-menu input.interval {
+    width: 3.5em;
+}
+
+#eye-msg-menu input.interval::-webkit-inner-spin-button,
+#eye-msg-menu input.interval::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+#eye-msg-select {
+    margin-right: 10px;
+    margin-top: 0px;
+    font-size: 7em;
+    color: #505050;
+    z-index: 1;
+    opacity: 1;
+    line-height: 1;
+}
+
+#eye-msg-select.viewed {
+    opacity: 1;
+    color: green;
+}
+
+@media screen and (max-width: 12in) {
+    .eye-msg-charsets-parent {
+        text-align: left;
+        padding: 0;
+        border: none;
+    }
+}
