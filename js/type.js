@@ -214,7 +214,7 @@
         ['M', 'N', 'O', 'P', 'Q', 'R'],
         ['S', 'T', 'U', 'V', 'W', 'X'],
         ['Y', 'Z', '?', '.', ',', '\'', '!'],
-        ['_', '⌫', '⏯︎', 'Clear'],
+        ['_', '⌫', '⏯︎', 'Reset'],
         //['_', '⌫', '?', '.', ',', '\'', '!'],
         //['Done'],
         //['Clear', 'Pause'],
@@ -363,7 +363,7 @@
                     m.textContent = m.textContent.replace(/.$/, '');
                 } else if (['_', '␣'].includes(c)) {
                     m.textContent += ' ';
-                } else if (['Clear', 'Rest'].includes(c)) {
+                } else if (['Clear', 'Reset'].includes(c)) {
                     m.textContent = '';
                 } else {
                     m.textContent += c;
