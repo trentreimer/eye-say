@@ -86,16 +86,19 @@
         const b = document.getElementById('webgazerFaceFeedbackBox');
 
         const now = performance.now();
-        if (calibrationPrecheckStart === null) calibrationPreCheckStart = now;
 
         if (c && b && b.style && b.style.borderColor && b.style.borderColor == 'green') {
             hideMessage();
-            setTimeout(() => { startCalibration(); }, 1000);
+            setTimeout(() => { startCalibration(); }, 0);
             calibrationPrecheckStart = null;
         } else {
-            if (c && calibrationPrecheckStart < now - 2000) {
-                if (calibrationPrecheckStart < now - 10000) c.classList.add('error');
-                showMessage('Make sure the camera can see your eyes');
+            if (b && b.style && b.style.borderColor) {
+                if (calibrationPrecheckStart === null) calibrationPrecheckStart = now;
+
+                if (calibrationPrecheckStart < now - 2000) {
+                    showMessage('Make sure the camera can see your eyes');
+                    if (b.style.borderColor == 'red') c.classList.add('error');
+                }
             }
 
             setTimeout(() => { calibrationPrecheck() }, 1000);
@@ -214,13 +217,13 @@
         ['M', 'N', 'O', 'P', 'Q', 'R'],
         ['S', 'T', 'U', 'V', 'W', 'X'],
         ['Y', 'Z', '?', '.', ',', '\'', '!'],
-        ['_', '⌫', '⏯︎', 'Reset'],
+        ['_', '⌫', '↵', '⏯︎', 'Clear'],
         //['_', '⌫', '?', '.', ',', '\'', '!'],
         //['Done'],
         //['Clear', 'Pause'],
     ];
 
-    const setEyeMsg = function() {
+    const setUpEyeMsg = function() {
         try { webgazer.clearGazeListener(); } catch (error) { console.log(error); }
 
         eyeMsgCharsetIndex = 0;
@@ -238,6 +241,8 @@
         }
 
         document.querySelector('.eye-msg-charsets').innerHTML = html;
+        document.querySelector('#eye-msg-text').value = '';
+        document.querySelector('#eye-msg-text').focus();
 
         setTimeout(function() {
             document.querySelector('#eye-msg-background').classList.remove('clear');
@@ -276,7 +281,7 @@
 
     const startEyeMsg = function() {
         hideMessage();
-        setEyeMsg();
+        setUpEyeMsg();
         webgazer.setGazeListener(eyeFollower);
     }
 
@@ -328,6 +333,12 @@
             chars[eyeMsgCharIndex].classList.add('highlight');
             eyeMsgCharIndex ++;
         }
+
+        const m = document.getElementById('eye-msg-text');
+        if (document.activeElement !== m) {
+            m.focus();
+            m.setSelectionRange(m.value.length, m.value.length);
+        }
     }
 
     const selectEyeMsgValue = function() {
@@ -345,6 +356,9 @@
                 if (['Pause', '⏸', '⏯︎'].includes(c)) {
                     highlighted.classList.add('highlight');
                     eyeMsgPaused = true;
+
+                    eyeMsgSelectMode = 'charset';
+                    eyeMsgCharsetIndex = 0;
                 }
 
                 return;
@@ -360,15 +374,20 @@
                 const m = document.getElementById('eye-msg-text');
 
                 if (['⌫', '«', '<'].includes(c)) {
-                    m.textContent = m.textContent.replace(/.$/, '');
+                    m.value = m.value.substring(0, m.value.length - 1);
                 } else if (['_', '␣'].includes(c)) {
-                    m.textContent += ' ';
-                } else if (['Clear', 'Reset'].includes(c)) {
-                    m.textContent = '';
+                    m.value += ' ';
+                } else if (['Clear', 'Rest'].includes(c)) {
+                    m.value = '';
+                } else if (['↵'].includes(c)) {
+                    m.value += "\n\n";
                 } else {
-                    m.textContent += c;
-                    if (['.', '?', ',', '!'].includes(c)) m.textContent += ' ';
+                    m.value += c;
+                    if (['.', '?', ',', '!'].includes(c)) m.value += ' ';
                 }
+
+                m.focus();
+                m.setSelectionRange(m.value.length, m.value.length);
 
                 eyeMsgSelectMode = 'charset';
                 eyeMsgCharsetIndex = 0;
