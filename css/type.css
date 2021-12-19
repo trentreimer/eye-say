@@ -292,6 +292,8 @@ body {
 
 #eye-msg {
     flex-grow: 1;
+    font-size: inherit;
+    font-family: inherit;
 }
 
 #eye-msg hr {
@@ -311,14 +313,12 @@ body {
     background: #e0e0e0;
     color: #000;
     box-shadow: 0 0 5px #000 inset;
+    border: none;
     border-radius: 0em;
-}
-
-#eye-msg-text::after {
-    content: '_';
-    color: transparent;
-    margin-left: 4px;
-    border-left: 2px solid #888;
+    font-family: inherit;
+    font-size: inherit;
+    caret-color: #888;
+    outline: none;
 }
 
 #eye-msg-menu {
