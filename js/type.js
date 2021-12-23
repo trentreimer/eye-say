@@ -355,17 +355,6 @@
             document.querySelectorAll('.eye-msg-charsets .highlight').forEach(ee => { ee.classList.remove('highlight'); });
             document.querySelectorAll('#eye-msg-menu .start-stop').forEach(e => { e.setAttribute('data-action', 'start'); });
 
-            if (eyeMsgMode === 'compose') {
-                const e = document.getElementById('eye-msg-text');
-                if (e.value.length > 0) {
-                    e.select();
-                    e.setSelectionRange(0, e.value.length);
-
-                    showMessage('You can copy and paste the message contents into an email, document, card, etc.');
-                    setTimeout(function() { hideMessage(); }, 5000);
-                }
-            }
-
             webgazer.clearGazeListener();
         } catch (error) {
             console.log(error);
@@ -464,14 +453,6 @@
 
                 m.focus();
                 m.setSelectionRange(m.value.length, m.value.length);
-
-                document.querySelectorAll('#eye-msg-background .copy-text').forEach(e => {
-                    if (m.value.length) {
-                        e.removeAttribute('disabled');
-                    } else {
-                        e.setAttribute('disabled', 'disabled');
-                    }
-                });
 
                 eyeMsgSelectMode = 'charset';
                 eyeMsgCharsetIndex = 0;
