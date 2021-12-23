@@ -226,7 +226,7 @@
 
     const eyeMsgSpecialKeys = {
         'chat': ['_', '⌫', '⏯︎', 'Empty'],
-        'compose': ['_', '⌫', '↵', '⏯︎', 'Done'],
+        'compose': ['_', '⌫', '↵', '⏯︎', 'Stop'],
     };
 
     // Page load should not contain any previous text.
