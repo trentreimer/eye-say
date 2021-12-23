@@ -426,6 +426,7 @@
                 return;
             } else if (['Stop', 'Done'].includes(c)) {
                 stopEyeMsg();
+                highlighted.classList.add('highlight');
                 return;
             }
 
