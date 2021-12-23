@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="css/safari.css">
 
         <style type="text/css">
-            @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&family=DM+Mono&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
 
             .hidden { display: none; }
         </style>
@@ -64,13 +64,15 @@
                 </div>
 
                 <div id="eye-msg">
-                    <textarea id="eye-msg-text"></textarea>
+                    <textarea id="eye-msg-text" spellcheck="false"></textarea>
                 </div>
 
                 <div id="eye-msg-menu">
-                    <button class="quit"><i class="fas fa-chevron-left"></i> Exit</button>
-                    <button class="recalibrate">Recalibrate</button>
-                    <div style="margin-right: 20px;">Speed <input type="number" class="interval" min="1" max="10" step="0.1"> seconds</div>
+                    <div>Mode <select class="mode"><option value="chat">Chat</option><option value="compose">Compose</option></select></div>
+                    <div>Speed <input type="number" class="interval" min="1" max="10" step="0.1"> seconds</div>
+                    <button class="recalibrate"><i class="fas fa-bullseye"></i> Recalibrate</button>
+                    <button class="start-stop" data-action="stop"></button>
+                    <button class="copy-text" disabled>⎘ Copy Text</button>
                 </div>
             </div>
         </div>

@@ -204,16 +204,20 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    transition: opacity 0.5s;
     font-size: 1.75rem;
     background: #000;
     color: #fff;
     font-family: 'DM Mono', monospace;
-    /*z-index: 2;*/
 }
 
-#eye-msg-background.clear {
+#eye-msg-background.clear,
+#eye-msg-background *.clear {
     opacity: 0;
+}
+
+#eye-msg-background,
+#eye-msg-background * {
+    transition: opacity 0.5s;
 }
 
 #eye-msg-space {
@@ -325,8 +329,9 @@ body {
     padding: 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     font-size: 1rem;
+    color: #ddd;
 }
 
 button, input, select {
@@ -340,6 +345,22 @@ button, input, select {
 #eye-msg-menu input.interval::-webkit-inner-spin-button,
 #eye-msg-menu input.interval::-webkit-outer-spin-button {
     opacity: 1;
+}
+
+#eye-msg-menu .start-stop[data-action="stop"]::before {
+    content: '🛑 ';
+}
+
+#eye-msg-menu .start-stop[data-action="stop"]::after {
+    content: 'Stop';
+}
+
+#eye-msg-menu .start-stop[data-action="start"]::before {
+    content: '🟢 ';
+}
+
+#eye-msg-menu .start-stop[data-action="start"]::after {
+    content: 'Restart';
 }
 
 #eye-msg-select {

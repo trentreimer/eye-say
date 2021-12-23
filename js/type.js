@@ -37,6 +37,8 @@
     showMessage('<span class="blink">Loading eye-tracker...</span>');
 
     window.addEventListener('load', function() {
+        //hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
+
         webgazer.showPredictionPoints(false);
         webgazer.showFaceOverlay(false);
         webgazer.removeMouseEventListeners();
@@ -95,7 +97,7 @@
             if (b && b.style && b.style.borderColor) {
                 if (calibrationPrecheckStart === null) calibrationPrecheckStart = now;
 
-                if (calibrationPrecheckStart < now - 2000) {
+                if (calibrationPrecheckStart <= now - 2000) {
                     showMessage('Make sure the camera can see your eyes');
                     if (b.style.borderColor == 'red') c.classList.add('error');
                 }
@@ -193,11 +195,12 @@
 
     ///////////////////////////////////////////////////////////////
     // Set character pause for rotation based typing (milliseconds)
-    let charRotationPause = 1500;
+    let charRotationPause = parseInt(localStorage.getItem('charRotationPause')) >= 1000 ? parseInt(localStorage.getItem('charRotationPause')) : 1500;
+    ///////////////////////////////////////////////////////////////
 
-    const setRotationPause = function(ms = 1500) {
-        if (parseInt(ms) >= 1000) charRotationPause = parseInt(ms);
-    }
+    ///////////////////////////////////////////////////////////////
+    // Mode is either 'chat' or 'compose'
+    let eyeMsgMode = ['chat', 'compose'].includes(sessionStorage.getItem('eyeMsgMode')) ? sessionStorage.getItem('eyeMsgMode') : 'chat';
     ///////////////////////////////////////////////////////////////
 
 
@@ -211,26 +214,37 @@
     let eyeMsgPaused = false;
     let eyePosition, eyePositionStartTime, eyeCursorMove;
 
-    const eyeMsgChars = [
+    let eyeMsgChars;
+
+    const eyeMsgAlphaKeys = [
         ['A', 'B', 'C', 'D', 'E', 'F'],
         ['G', 'H', 'I', 'J', 'K', 'L'],
         ['M', 'N', 'O', 'P', 'Q', 'R'],
         ['S', 'T', 'U', 'V', 'W', 'X'],
         ['Y', 'Z', '?', '.', ',', '\'', '!'],
-        ['_', '⌫', '↵', '⏯︎', 'Clear'],
-        //['_', '⌫', '?', '.', ',', '\'', '!'],
-        //['Done'],
-        //['Clear', 'Pause'],
     ];
 
-    const setUpEyeMsg = function() {
+    const eyeMsgSpecialKeys = {
+        'chat': ['_', '⌫', '⏯︎', 'Empty'],
+        'compose': ['_', '⌫', '↵', '⏯︎', 'Done'],
+    };
+
+    // Page load should not contain any previous text.
+    document.querySelector('#eye-msg-text').value = '';
+
+    const setUpEyeMsg = function(proceed = true) {
         try { webgazer.clearGazeListener(); } catch (error) { console.log(error); }
+        try { clearInterval(eyeMsgInterval); } catch (error) { console.log(error); }
 
         eyeMsgCharsetIndex = 0;
         eyeMsgCharIndex = 0;
         eyeMsgSelectMode = 'charset';
         eyeMsgCharRotationNum = 0;
         eyeMsgInterval = null;
+
+        eyeMsgChars = [];
+        for (const charset of eyeMsgAlphaKeys) eyeMsgChars.push(charset);
+        eyeMsgChars.push(eyeMsgSpecialKeys[eyeMsgMode]);
 
         let html = '';
 
@@ -241,14 +255,18 @@
         }
 
         document.querySelector('.eye-msg-charsets').innerHTML = html;
-        document.querySelector('#eye-msg-text').value = '';
-        document.querySelector('#eye-msg-text').focus();
+        //document.querySelector('#eye-msg-text').value = '';
+        {
+            const e = document.querySelector('#eye-msg-text');
+            e.focus();
+            e.setSelectionRange(e.value.length, e.value.length);
+        }
 
         setTimeout(function() {
             document.querySelector('#eye-msg-background').classList.remove('clear');
         }, 0);
 
-        eyeMsgInterval = setInterval(() => { setEyeMsgFocus(); }, charRotationPause);
+        if (proceed) eyeMsgInterval = setInterval(() => { setEyeMsgFocus(); }, charRotationPause);
     }
 
     ///////////////////////////////////////////
@@ -257,15 +275,16 @@
 
     document.querySelector('#eye-msg-menu .interval').addEventListener('change', function() {
         charRotationPause = this.value * 1000;
+        localStorage.setItem('charRotationPause', charRotationPause);
         clearInterval(eyeMsgInterval);
         eyeMsgInterval = setInterval(() => { setEyeMsgFocus(); }, charRotationPause);
     });
 
-    document.querySelector('#eye-msg-menu .quit').addEventListener('click', function() {
+    document.querySelectorAll('#eye-msg-menu .quit').forEach(e => { e.addEventListener('click', function() {
         window.location.href = 'index.html';
-    });
+    })});
 
-    document.querySelector('#eye-msg-menu .recalibrate').addEventListener('click', function() {
+    document.querySelectorAll('#eye-msg-menu .recalibrate').forEach(e => { e.addEventListener('click', function() {
         webgazer.clearGazeListener();
         clearInterval(eyeMsgInterval);
         document.querySelectorAll('.eye-msg-charsets .highlight').forEach(e => { e.classList.remove('highlight'); });
@@ -277,12 +296,46 @@
             webgazer.setGazeListener(eyeFollower);
             eyeMsgInterval = setInterval(setEyeMsgFocus, charRotationPause);
         });
+    })});
+
+    document.querySelectorAll('#eye-msg-menu .mode').forEach(e => {
+        e.value = eyeMsgMode;
+
+        e.addEventListener('change', function() {
+            eyeMsgMode = this.value;
+            sessionStorage.setItem('eyeMsgMode', eyeMsgMode);
+            startEyeMsg();
+        });
     });
+
+    document.querySelectorAll('#eye-msg-menu .start-stop').forEach(e => {
+        e.addEventListener('click', function() {
+            const a = this.getAttribute('data-action');
+
+            if (a === 'stop') {
+                stopEyeMsg();
+            } else {
+                startEyeMsg();
+            }
+        });
+    });
+
+    document.querySelectorAll('#eye-msg-background .copy-text').forEach(e => {
+        e.addEventListener('click', function() {
+            const m = document.getElementById('eye-msg-text');
+            m.focus();
+            m.setSelectionRange(0, m.value.length);
+            navigator.clipboard.writeText(m.value.trim());
+        });
+    });
+    ///////////////////////////////////////////
 
     const startEyeMsg = function() {
         hideMessage();
         setUpEyeMsg();
         webgazer.setGazeListener(eyeFollower);
+
+        document.querySelectorAll('#eye-msg-menu .start-stop').forEach(e => { e.setAttribute('data-action', 'stop'); });
     }
 
     const hideEyeMsg = function() {
@@ -295,9 +348,35 @@
         document.querySelectorAll('#eye-msg-background, #eye-msg-select').forEach(e => { e.remove(); });
     }
 
+    const stopEyeMsg = function() {
+        try { 
+            clearInterval(eyeMsgInterval);
+        
+            document.querySelectorAll('.eye-msg-charsets .highlight').forEach(ee => { ee.classList.remove('highlight'); });
+            document.querySelectorAll('#eye-msg-menu .start-stop').forEach(e => { e.setAttribute('data-action', 'start'); });
+
+            if (eyeMsgMode === 'compose') {
+                const e = document.getElementById('eye-msg-text');
+                if (e.value.length > 0) {
+                    e.select();
+                    e.setSelectionRange(0, e.value.length);
+
+                    showMessage('You can copy and paste the message contents into an email, document, card, etc.');
+                    setTimeout(function() { hideMessage(); }, 5000);
+                }
+            }
+
+            webgazer.clearGazeListener();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const setEyeMsgFocus = function() {
         //document.querySelectorAll('#eye-msg-charsets .highlight').forEach(e => { e.classList.remove('highlight'); });
         document.querySelectorAll('.eye-msg-charsets .highlight').forEach(e => { e.classList.remove('highlight'); });
+
+        //if (document.activeElement == document.querySelector('#eye-msg-menu .mode')) return;
         
         //const charsets = document.querySelectorAll('#eye-msg-charsets .eye-msg-charset');
         const charsets = document.querySelectorAll('.eye-msg-charset');
@@ -333,12 +412,6 @@
             chars[eyeMsgCharIndex].classList.add('highlight');
             eyeMsgCharIndex ++;
         }
-
-        const m = document.getElementById('eye-msg-text');
-        if (document.activeElement !== m) {
-            m.focus();
-            m.setSelectionRange(m.value.length, m.value.length);
-        }
     }
 
     const selectEyeMsgValue = function() {
@@ -352,7 +425,7 @@
 
             const c = highlighted.textContent;
 
-            if (['Pause', '⏸', '⏯︎', 'Stop', 'Done'].includes(c)) {
+            if (['Pause', '⏸', '⏯︎'].includes(c)) {
                 if (['Pause', '⏸', '⏯︎'].includes(c)) {
                     highlighted.classList.add('highlight');
                     eyeMsgPaused = true;
@@ -361,6 +434,9 @@
                     eyeMsgCharsetIndex = 0;
                 }
 
+                return;
+            } else if (['Stop', 'Done'].includes(c)) {
+                stopEyeMsg();
                 return;
             }
 
@@ -377,7 +453,7 @@
                     m.value = m.value.substring(0, m.value.length - 1);
                 } else if (['_', '␣'].includes(c)) {
                     m.value += ' ';
-                } else if (['Clear', 'Rest'].includes(c)) {
+                } else if (['Clear', 'Reset', 'Empty', 'NewMsg'].includes(c)) {
                     m.value = '';
                 } else if (['↵'].includes(c)) {
                     m.value += "\n\n";
@@ -389,9 +465,18 @@
                 m.focus();
                 m.setSelectionRange(m.value.length, m.value.length);
 
+                document.querySelectorAll('#eye-msg-background .copy-text').forEach(e => {
+                    if (m.value.length) {
+                        e.removeAttribute('disabled');
+                    } else {
+                        e.setAttribute('disabled', 'disabled');
+                    }
+                });
+
                 eyeMsgSelectMode = 'charset';
                 eyeMsgCharsetIndex = 0;
             }
+
         }
 
         eyeMsgInterval = setInterval(setEyeMsgFocus, charRotationPause);
