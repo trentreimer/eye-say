@@ -34,7 +34,7 @@
     showMessage('<span class="blink">Loading eye-tracker...</span>');
 
     window.addEventListener('load', function() {
-        //hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
+        hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
 
         webgazer.showPredictionPoints(false);
         webgazer.showFaceOverlay(false);
@@ -457,26 +457,18 @@
                 const m = document.getElementById('eye-msg-text');
 
                 if (['⌫', '«', '<'].includes(c)) {
-                    //m.value = m.value.substring(0, m.value.length - 1);
                     m.textContent = m.textContent.replace(/.$/, '');
                 } else if (['_', '␣'].includes(c)) {
-                    //m.value += ' ';
                     m.textContent += ' ';
                 } else if (['Clear', 'Reset', 'Empty', 'NewMsg'].includes(c)) {
-                    //m.value = '';
                     m.textContent = '';
                 } else if (['↵'].includes(c)) {
-                    //m.value += "\n\n";
                     m.textContent += "\n\n";
                 } else {
-                    //m.value += c;
-                    //if (['.', '?', ',', '!'].includes(c)) m.value += ' ';
                     m.textContent += c;
                     if (['.', '?', ',', '!'].includes(c)) m.textContent += ' ';
                 }
 
-                //m.focus();
-                //m.setSelectionRange(m.value.length, m.value.length);
                 m.scrollTop = m.scrollHeight;
 
                 eyeMsgSelectMode = 'charset';
