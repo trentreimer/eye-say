@@ -55,18 +55,22 @@
         </div>
 
         <div id="eye-msg-background" class="clear">
-            <div id="eye-msg-space">
-                <div id="eye-msg-panel">
-                    <div id="eye-msg-charsets-parent">
-                        <div class="eye-msg-charsets"></div>
+            <div id="eye-msg-space-row">
+                <div id="eye-msg-space">
+                    <div id="eye-msg-panel">
+                        <div id="eye-msg-charsets-parent">
+                            <div class="eye-msg-charsets"></div>
+                        </div>
+                        <div id="eye-msg-select"><i class="fas fa-check-circle"></i></div>
                     </div>
-                    <div id="eye-msg-select"><i class="fas fa-check-circle"></i></div>
-                </div>
 
-                <div id="eye-msg">
-                    <pre id="eye-msg-text"></pre>
+                    <div id="eye-msg">
+                        <pre id="eye-msg-text"></pre>
+                    </div>
                 </div>
+            </div>
 
+            <div id="eye-msg-menu-row">
                 <div id="eye-msg-menu">
                     <div>Mode <select class="mode"><option value="chat">Chat</option><option value="compose">Compose</option></select></div>
                     <div>Speed <input type="number" class="interval" min="1" max="10" step="0.1"> seconds</div>
