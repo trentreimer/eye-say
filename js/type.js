@@ -34,7 +34,7 @@
     showMessage('<span class="blink">Loading eye-tracker...</span>');
 
     window.addEventListener('load', function() {
-        hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
+        //hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
 
         webgazer.showPredictionPoints(false);
         webgazer.showFaceOverlay(false);
