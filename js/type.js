@@ -16,19 +16,16 @@
     let hasVideoDevice = false;
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-        alert('Unable to detect a camera');
-        window.history.go(-1);
+        window.location.href = 'index.html';
     }
 
     navigator.mediaDevices.enumerateDevices().then(devices => {
         devices.forEach(device => {
-            console.log(device.kind);
             if (device.kind === 'videoinput') hasVideoDevice = true;
         });
 
         if (!hasVideoDevice) {
-            alert('Unable to detect a camera');
-            window.history.go(-1);
+            window.location.href = 'index.html';
         }
     });
     /////////////////////////////////////////////////////////////
