@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Eye Type: select mode</title>
+        <link rel="stylesheet" href="css/site.css">
+        <style type="text/css">
+            html {
+                background: #000;
+                color: #fff;
+            }
+
+            h1 {
+                text-align: center;
+            }
+
+            #modes {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: stretch;
+                justify-content: space-between;
+            }
+
+            .mode {
+                width: calc(50% - 7.5px);
+                border: 2px solid #505050;
+                border-radius: 1em;
+                padding: 1em;
+            }
+
+            .mode button:first-of-type {
+                width: 100%;
+                text-align: left;
+            }
+
+            .mode button .big {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Select typing mode</h1>
+
+        <div id="modes">
+            <div class="mode">
+                <button data-typing-mode="chat">
+                    <div class="big">Chat</div>
+                    <!-- <div>Communicate with people in the room</div> -->
+                </button>
+
+                <h2>Communicate with people in the room.</h2>
+
+                <p>Includes an &quot;Reset&quot; control for the user to delete text box contents and start a new message.</p>
+            </div>
+            <div class="mode">
+                <button data-typing-mode="compose">
+                    <div class="big">Compose</div>
+                    <!-- <div>Write a longer message</div> -->
+                </button>
+
+                <h2>Write a longer message.</h2>
+
+                <p>Includes a ↵ line return control so the user can create paragraphs.</p>
+                <p>Includes a &quot;Stop&quot; control for the user for when they are finished typing.</p>
+                <p>You can copy the text for use in email, cards, etc.</p>
+            </div>
+        </div>
+
+        <p style="text-align: center;">The typewriter page also lets you change modes at any time.</p>
+
+        <script type="text/javascript">
+            document.querySelectorAll('button[data-typing-mode]').forEach(e => {
+                e.addEventListener('click', function() {
+                    sessionStorage.setItem('eyeMsgMode', this.getAttribute('data-typing-mode'));
+                    window.location.href = 'type.html';
+                });
+            });
+        </script>
+    </body>
+</html>
