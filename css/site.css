@@ -43,6 +43,12 @@ p {
     margin: 15px 0;
 }
 
+button,
+input[type="button"],
+input[type="submit"] {
+    cursor: pointer;
+}
+
 #no-camera-msg {
     background: #e0e0e0;
     padding: 10px;
