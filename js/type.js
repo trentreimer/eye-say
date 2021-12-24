@@ -222,12 +222,30 @@
     ];
 
     const eyeMsgSpecialKeys = {
-        'chat': ['_', '⌫', '⏯︎', 'Empty'],
+        'chat': ['_', '⌫', '⏯︎', 'Reset'],
         'compose': ['_', '⌫', '↵', '⏯︎', 'Stop'],
     };
 
     // Page load should not contain any previous text.
-    document.querySelector('#eye-msg-text').value = '';
+    //document.querySelector('#eye-msg-text').value = '';
+
+    // Hard-set the height so contents can scroll
+    const setEyeMsgTextBoxHeight = function() {
+        const m = document.getElementById('eye-msg-text');
+        const t = m.textContent;
+
+        m.textContent = '';
+        m.style.height = 'calc(100% - 20px)'; // Revert to the original percentage based height;
+
+        const h = m.getBoundingClientRect().height;
+
+        m.style.height = h + 'px';
+        m.textContent = t;
+    }
+
+    window.addEventListener('resize', function() {
+        setEyeMsgTextBoxHeight();
+    });
 
     const setUpEyeMsg = function(proceed = true) {
         try { webgazer.clearGazeListener(); } catch (error) { console.log(error); }
@@ -252,12 +270,8 @@
         }
 
         document.querySelector('.eye-msg-charsets').innerHTML = html;
-        //document.querySelector('#eye-msg-text').value = '';
-        {
-            const e = document.querySelector('#eye-msg-text');
-            e.focus();
-            e.setSelectionRange(e.value.length, e.value.length);
-        }
+
+        setEyeMsgTextBoxHeight();
 
         setTimeout(function() {
             document.querySelector('#eye-msg-background').classList.remove('clear');
@@ -320,9 +334,16 @@
     document.querySelectorAll('#eye-msg-background .copy-text').forEach(e => {
         e.addEventListener('click', function() {
             const m = document.getElementById('eye-msg-text');
-            m.focus();
-            m.setSelectionRange(0, m.value.length);
-            navigator.clipboard.writeText(m.value.trim());
+            //m.focus();
+            //m.textContent.setSelectionRange(0, m.value.length);
+            const r = document.createRange();
+            const s = window.getSelection();
+
+            r.selectNodeContents(m);
+            s.removeAllRanges();
+            s.addRange(r);
+
+            navigator.clipboard.writeText(m.textContent.trim());
         });
     });
     ///////////////////////////////////////////
@@ -431,26 +452,32 @@
                 eyeMsgSelectMode = 'char';
                 eyeMsgCharIndex = 0;
                 eyeMsgCharsetIndex = eyeMsgCharsetIndex - 1;
-                //if (eyeMsgCharsetIndex < 0) eyeMsgCharsetIndex = document.querySelectorAll('#eye-msg-charsets .eye-msg-charset').length - 1;
                 if (eyeMsgCharsetIndex < 0) eyeMsgCharsetIndex = document.querySelectorAll('.eye-msg-charset').length - 1;
             } else { // Character select mode
                 const m = document.getElementById('eye-msg-text');
 
                 if (['⌫', '«', '<'].includes(c)) {
-                    m.value = m.value.substring(0, m.value.length - 1);
+                    //m.value = m.value.substring(0, m.value.length - 1);
+                    m.textContent = m.textContent.substring(0, m.value.length - 1);
                 } else if (['_', '␣'].includes(c)) {
-                    m.value += ' ';
+                    //m.value += ' ';
+                    m.textContent += ' ';
                 } else if (['Clear', 'Reset', 'Empty', 'NewMsg'].includes(c)) {
-                    m.value = '';
+                    //m.value = '';
+                    m.textContent = '';
                 } else if (['↵'].includes(c)) {
-                    m.value += "\n\n";
+                    //m.value += "\n\n";
+                    m.textContent += "\n\n";
                 } else {
-                    m.value += c;
-                    if (['.', '?', ',', '!'].includes(c)) m.value += ' ';
+                    //m.value += c;
+                    //if (['.', '?', ',', '!'].includes(c)) m.value += ' ';
+                    m.textContent += c;
+                    if (['.', '?', ',', '!'].includes(c)) m.textContent += ' ';
                 }
 
-                m.focus();
-                m.setSelectionRange(m.value.length, m.value.length);
+                //m.focus();
+                //m.setSelectionRange(m.value.length, m.value.length);
+                m.scrollTop = m.scrollHeight;
 
                 eyeMsgSelectMode = 'charset';
                 eyeMsgCharsetIndex = 0;
