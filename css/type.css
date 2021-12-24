@@ -194,16 +194,6 @@ input[type="submit"] {
     }
 }
 
-#sight-point {
-    position: absolute;
-    z-index: 10;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #ddd;
-    opacity: .8;
-}
-
 #eye-msg-background {
     position: absolute;
     top: 0;
@@ -214,6 +204,8 @@ input[type="submit"] {
     background: #000;
     color: #fff;
     font-family: 'DM Mono', monospace;
+    display: flex;
+    flex-direction: column;
 }
 
 #eye-msg-background.clear,
@@ -224,6 +216,10 @@ input[type="submit"] {
 #eye-msg-background,
 #eye-msg-background * {
     transition: opacity 0.5s;
+}
+
+#eye-msg-space-row {
+    flex-grow: 1;
 }
 
 #eye-msg-space {
@@ -342,19 +338,23 @@ input[type="submit"] {
     border-left: 2px solid #888;
 }
 
+#eye-msg-menu-row {
+    background: #b0b0b8;
+    color: #000;
+}
+
 #eye-msg-menu {
     padding: 10px;
     display: flex;
     align-items: center;
     gap: 15px;
     font-size: 1rem;
-    background: #c0c0c2;
-    color: #000;
+    margin: 0 auto;
 }
 
 @media screen and (min-width: 19in) {
     #eye-msg-menu {
-        border-radius: 0.35em;
+        max-width: 15in;
     }
 }
 
