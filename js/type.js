@@ -458,7 +458,7 @@
 
                 if (['⌫', '«', '<'].includes(c)) {
                     //m.value = m.value.substring(0, m.value.length - 1);
-                    m.textContent = m.textContent.substring(0, m.value.length - 1);
+                    m.textContent = m.textContent.replace(/.$/, '');
                 } else if (['_', '␣'].includes(c)) {
                     //m.value += ' ';
                     m.textContent += ' ';
