@@ -43,6 +43,10 @@ p {
     margin: 15px 0;
 }
 
+li:nth-child(n + 2) {
+    margin-top: 12px;
+}
+
 button,
 input[type="button"],
 input[type="submit"] {
