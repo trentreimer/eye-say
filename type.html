@@ -17,18 +17,18 @@
         <script type="text/javascript">
             /**
              * Apple has world-class engineering talent so we can only assume the reason Safari is perenially
-             * behind the competition in supporting W3C standards is because they don't care.
-             * Something as fundamental as reliably reporting the available window height is hardly
-             * beyond their reach and would certainly improve user experience.
+             * behind the competition in supporting W3C standards is because they don't want to.
+             * Something as fundamental as accurately reporting the available window height is not beyond their
+             * reach and would improve the user interface experience.
              *
-             * In which case, why not allow iOS users to install browser engines from someone who does care?
+             * While OSX users can just use a different browser, iOS users cannot truly do that.
              *
              * iOS uses Safari's rendering and Javascript engines in the background NO MATTER WHCIH BROWSER
-             * you install. If that wasn't anti-competitive enough, they actively DISABLE some APIs when you
-             * use those other browsers.
+             * you install and use. If that wasn't anti-competitive enough, they actively DISABLE some APIs when
+             * you use those other browsers.
              *
              * Safari has done the internet a world of good by breaking Internet Explorer's monopoly.
-             * They should not be working so hard to mimic it.
+             * They should not be working to mimic it.
              */
 
             const safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -37,7 +37,7 @@
                 document.documentElement.classList.add('safari');
             }
 
-            const windowHeight = function() { // Note: this only works on Safari because of safari.css
+            const windowHeight = function() { // Note: this requires safari.css
                 return safari ? document.body.getBoundingClientRect().height : window.innerHeight;
             }
 

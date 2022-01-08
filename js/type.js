@@ -223,7 +223,7 @@
 
     const eyeMsgSpecialKeys = {
         'chat': ['_', '⌫', '⏯︎', 'Reset'],
-        'compose': ['_', '⌫', '↵', '⏯︎', 'Stop'],
+        'compose': ['_', '⌫', '↵', '⏯︎', '🛑'],
     };
 
     // Page load should not contain any previous text.
@@ -442,7 +442,7 @@
                 }
 
                 return;
-            } else if (['Stop', 'Done'].includes(c)) {
+            } else if (['Stop', 'Done', '🛑'].includes(c)) {
                 stopEyeMsg();
                 highlighted.classList.add('highlight');
                 return;
