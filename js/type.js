@@ -334,8 +334,6 @@
     document.querySelectorAll('#eye-msg-background .copy-text').forEach(e => {
         e.addEventListener('click', function() {
             const m = document.getElementById('eye-msg-text');
-            //m.focus();
-            //m.textContent.setSelectionRange(0, m.value.length);
             const r = document.createRange();
             const s = window.getSelection();
 
@@ -380,12 +378,8 @@
     }
 
     const setEyeMsgFocus = function() {
-        //document.querySelectorAll('#eye-msg-charsets .highlight').forEach(e => { e.classList.remove('highlight'); });
         document.querySelectorAll('.eye-msg-charsets .highlight').forEach(e => { e.classList.remove('highlight'); });
 
-        //if (document.activeElement == document.querySelector('#eye-msg-menu .mode')) return;
-        
-        //const charsets = document.querySelectorAll('#eye-msg-charsets .eye-msg-charset');
         const charsets = document.querySelectorAll('.eye-msg-charset');
         
         if (eyeMsgCharsetIndex >= charsets.length) {
@@ -422,7 +416,6 @@
     }
 
     const selectEyeMsgValue = function() {
-        //const highlighted = document.querySelector('#eye-msg-charsets .highlight');
         const highlighted = document.querySelector('.eye-msg-charsets .highlight');
 
         if (highlighted) {
@@ -518,10 +511,6 @@
             eyePosition = pos;
         } else if (['right', 'left'].includes(pos) && clock - eyePositionStartTime > positionWait) {
             if (pos === 'right') {
-                if (eyeMsgPaused === true) {
-                    //document.getElementById('eye-msg-text').textContent = '';
-                }
-
                 clearInterval(eyeMsgInterval);
                 eyeMsgInterval = null;
                 eyeCursorMove = 'right';
