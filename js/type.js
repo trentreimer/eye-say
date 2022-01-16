@@ -67,8 +67,8 @@
 
     let numCalibrationClicks = 5;
     let calibrationClickNum = 0;
-    //const calibrationZones = ['middle-left', 'middle-right'];
-    const calibrationZones = ['top-left', 'top-right', 'bottom-right', 'bottom-left'];
+    const calibrationZones = ['middle-left', 'middle-right'];
+    //const calibrationZones = ['top-left', 'top-right', 'bottom-right', 'bottom-left'];
     //const calibrationZones = ['top-center', 'top-right', 'middle-right', 'bottom-right', 'bottom-center', 'bottom-left', 'middle-left', 'top-left'];
     let calibrationZoneIndex = 0;
     let calibrationTargetMoveTime = 2000; // Time it takes target to move from one position to another in milliseconds
@@ -134,6 +134,7 @@
         setTimeout(() => {
             hideMessage();
             calibrationTarget.className = message.classList.contains('middle') ? '' : 'top-center';
+            //calibrationTarget.className = 'top-center';
             //document.querySelector('#message').classList.remove('middle');
 
             // Move the calibration dot to the first "click" point
@@ -222,7 +223,9 @@
     ];
 
     const eyeMsgSpecialKeys = {
-        'chat': ['_', '⌫', '⏯︎', 'Reset'],
+        //'chat': ['_', '⌫', '⏯︎', 'Reset'],
+        'chat': ['_', '⌫', '↵', '⏯︎', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
+        //'chat': ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
         'compose': ['_', '⌫', '↵', '⏯︎', '🛑'],
     };
 
@@ -262,14 +265,21 @@
         eyeMsgChars.push(eyeMsgSpecialKeys[eyeMsgMode]);
 
         let html = '';
+        const u = document.createElement('div');
 
         for (let i = 0; i < eyeMsgChars.length; i ++) {
             html += '<div class="eye-msg-charset">';
-            eyeMsgChars[i].forEach(val => { html += '<span>' + val + '</span>'; });
+            eyeMsgChars[i].forEach(val => {
+                u.innerHTML = val;
+                const e = u.firstChild;
+                html += '<span data-character="' + (typeof e.getAttribute === 'function' && e.getAttribute('data-character') ? e.getAttribute('data-character') : val) + '">' + val + '</span>';
+            });
             html += '</div>';
         }
 
         document.querySelector('.eye-msg-charsets').innerHTML = html;
+        u.remove();
+        //console.log(html);
 
         setEyeMsgTextBoxHeight();
 
@@ -416,6 +426,10 @@
     }
 
     const selectEyeMsgValue = function() {
+        if (eyeDialogOpen) {
+            return selectEyeDialogValue();
+        }
+
         const highlighted = document.querySelector('.eye-msg-charsets .highlight');
 
         if (highlighted) {
@@ -423,7 +437,7 @@
             clearInterval(eyeMsgInterval);
             eyeMsgInterval = null;
 
-            const c = highlighted.textContent;
+            const c = highlighted.getAttribute('data-character');//highlighted.textContent;
 
             if (['Pause', '⏸', '⏯︎'].includes(c)) {
                 if (['Pause', '⏸', '⏯︎'].includes(c)) {
@@ -436,8 +450,16 @@
 
                 return;
             } else if (['Stop', 'Done', '🛑'].includes(c)) {
-                stopEyeMsg();
-                highlighted.classList.add('highlight');
+                //highlighted.classList.add('highlight');
+                
+                // Fire the dialog
+                eyeDialog('stop-dialog');
+                return;
+
+                //stopEyeMsg();
+                //return;
+            } else if (['Clear', 'Reset', 'Empty', 'NewMsg', '🗑'].includes(c)) {
+                eyeDialog('empty-dialog');
                 return;
             }
 
@@ -453,7 +475,7 @@
                     m.textContent = m.textContent.replace(/.$/, '');
                 } else if (['_', '␣'].includes(c)) {
                     m.textContent += ' ';
-                } else if (['Clear', 'Reset', 'Empty', 'NewMsg'].includes(c)) {
+                } else if (['Clear', 'Reset', 'Empty', 'NewMsg', '🗑'].includes(c)) {
                     m.textContent = '';
                 } else if (['↵'].includes(c)) {
                     m.textContent += "\n\n";
@@ -522,12 +544,97 @@
                     document.querySelectorAll('.eye-msg-charsets .highlight').forEach(e => { e.classList.remove('highlight'); });
                     eyeMsgInterval = setInterval(setEyeMsgFocus, charRotationPause);
                     return;
-                    /*eyeMsgSelectMode = 'charset';
-                    eyeMsgCharsetIndex = 0;*/
                 } else {
                     selectEyeMsgValue();
                 }
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////
+    // Eye controlled dialogs
+    let eyeDialogOpen = false;
+    let eyeDialogOptions;
+    let eyeDialogOptionIndex = 0;
+    let eyeDialogRotationNum = 0;
+    let eyeDialogDefaultAction;
+
+    const eyeDialog = function(dialogId, readingTimeout = 1000, defaultAction = 'resume') {
+        const d = document.getElementById(dialogId);
+
+        if (d && !eyeDialogOpen) {
+            eyeDialogOpen = true;
+            clearInterval(eyeMsgInterval);
+
+            document.querySelector('#eye-msg-panel').appendChild(d);
+
+            eyeDialogOptions = d.querySelectorAll('.eye-dialog-option');
+            eyeDialogOptionIndex = 0;
+            eyeDialogRotationNum = 0;
+            eyeDialogDefaultAction = defaultAction;
+
+            if (eyeDialogOptions.length > 0) {
+                setTimeout(function() {
+                    eyeMsgInterval = setInterval(function() {
+                        setEyeDialogFocus();
+                    }, charRotationPause + 500);
+                }, readingTimeout);
+            }
+        }
+
+        return null;
+    }
+
+    const setEyeDialogFocus = function() {
+        eyeDialogOptions.forEach(e => {
+            e.classList.remove('highlight');
+        });
+
+        if (eyeDialogOptionIndex >= eyeDialogOptions.length) {
+            eyeDialogRotationNum ++;
+            eyeDialogOptionIndex = 0;
+
+            if (eyeDialogRotationNum > 2) { // After two rotations through the options just fire the default action.
+                eyeDialogAction(eyeDialogDefaultAction);
+                return;
+            }
+        }
+
+        eyeDialogOptions[eyeDialogOptionIndex].classList.add('highlight');
+        eyeDialogOptionIndex ++;
+    }
+
+    const selectEyeDialogValue = function() {
+        const highlighted = document.querySelector('#eye-msg-panel .eye-dialog-option.highlight');
+
+        if (highlighted) {
+            const action = typeof highlighted.getAttribute === 'function' && highlighted.getAttribute('data-action') ? highlighted.getAttribute('data-action') : null;
+            eyeDialogAction(action);
+        }
+    }
+
+    const eyeDialogAction = function(action = 'resume') {
+        closeEyeDialog();
+
+        if (action === 'stop') {
+            stopEyeMsg();
+        } else if (action === 'empty') {
+            document.getElementById('eye-msg-text').textContent = '';
+            startEyeMsg();
+        } else { // The default action is 'resume'
+            startEyeMsg();
+        }
+    }
+
+    const closeEyeDialog = function() {
+        eyeDialogOpen = false;
+        clearInterval(eyeMsgInterval);
+
+        document.querySelectorAll('#eye-msg-panel .eye-dialog').forEach(e => {
+            document.body.appendChild(e);
+            e.querySelectorAll('.highlight').forEach(ee => {
+                ee.classList.remove('highlight');
+            });
+        });
     }
 }

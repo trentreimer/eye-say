@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="css/safari.css">
 
         <style type="text/css">
-            @import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=DM+Mono&family=Source+Sans+Pro&display=swap');
 
             .hidden { display: none; }
         </style>
@@ -17,15 +17,16 @@
         <script type="text/javascript">
             /**
              * Apple has world-class engineering talent so we can only assume the reason Safari is perenially
-             * behind the competition in supporting W3C standards is because they don't want to.
-             * Something as fundamental as accurately reporting the available window height is not beyond their
+             * behind the competition in supporting W3C standards is because it's not a priority.
+             * Something as fundamental as accurately measuring the available window height is not beyond their
              * reach and would improve the user interface experience.
              *
-             * While OSX users can just use a different browser, iOS users cannot truly do that.
+             * While Apple desktop users can switch browsers, iOS users cannot really do that.
              *
-             * iOS uses Safari's rendering and Javascript engines in the background NO MATTER WHCIH BROWSER
-             * you install and use. If that wasn't anti-competitive enough, they actively DISABLE some APIs when
-             * you use those other browsers.
+             * iOS runs Safari's rendering and Javascript engines in the background regardless of which browser
+             * interface you are using. i.e. If you are using Chrome or Firefox on iOS you are actually using
+             * Safari with a Chrome or Firefox interface. If that wasn't anti-competitive enough, they actively
+             * disable some APIs when you use those other browsers.
              *
              * Safari has done the internet a world of good by breaking Internet Explorer's monopoly.
              * They should not be working to mimic it.
@@ -37,7 +38,7 @@
                 document.documentElement.classList.add('safari');
             }
 
-            const windowHeight = function() { // Note: this requires safari.css
+            const windowHeight = function() {
                 return safari ? document.body.getBoundingClientRect().height : window.innerHeight;
             }
 
@@ -72,12 +73,32 @@
 
             <div id="eye-msg-menu-row">
                 <div id="eye-msg-menu">
-                    <div>Mode <select class="mode"><option value="chat">Chat</option><option value="compose">Compose</option></select></div>
+                    <!-- <div>Mode <select class="mode"><option value="chat">Chat</option><option value="compose">Compose</option></select></div> -->
                     <div>Speed <input type="number" class="interval" min="1" max="10" step="0.1"> seconds</div>
                     <button class="recalibrate"><i class="fas fa-bullseye"></i> Recalibrate</button>
-                    <button class="start-stop" data-action="stop"></button>
                     <button class="copy-text">📋 Copy Text</button>
+                    <button class="start-stop" data-action="stop"></button>
                 </div>
+            </div>
+        </div>
+
+
+        <!-- eye controlled dialogs -->
+        <div id="stop-dialog" class="eye-dialog" class="hidden">
+            <h2>Are you finished typing?</h2>
+
+            <div class="eye-dialog-options">
+                <span class="eye-dialog-option" data-action="stop">Yes</span>
+                <span class="eye-dialog-option" data-action="resume">No</span>
+            </div>
+        </div>
+
+        <div id="empty-dialog" class="eye-dialog" class="hidden">
+            <h2>Delete all text?</h2>
+
+            <div class="eye-dialog-options">
+                <span class="eye-dialog-option" data-action="empty">Yes</span>
+                <span class="eye-dialog-option" data-action="resume">No</span>
             </div>
         </div>
 
