@@ -224,9 +224,10 @@
 
     const eyeMsgSpecialKeys = {
         //'chat': ['_', '⌫', '⏯︎', 'Reset'],
-        'chat': ['_', '⌫', '↵', '⏯︎', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
-        //'chat': ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
-        'compose': ['_', '⌫', '↵', '⏯︎', '🛑'],
+        //'chat': ['_', '⌫', '↵', '⏯︎', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
+        //'compose': ['_', '⌫', '↵', '⏯︎', '🛑'],
+        'chat': ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
+        'compose': ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
     };
 
     // Page load should not contain any previous text.
