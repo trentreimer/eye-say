@@ -67,8 +67,8 @@
 
     let numCalibrationClicks = 5;
     let calibrationClickNum = 0;
-    const calibrationZones = ['middle-left', 'middle-right'];
-    //const calibrationZones = ['top-left', 'top-right', 'bottom-right', 'bottom-left'];
+    //const calibrationZones = ['middle-left', 'middle-right'];
+    const calibrationZones = ['top-left', 'top-right', 'bottom-right', 'bottom-left'];
     //const calibrationZones = ['top-center', 'top-right', 'middle-right', 'bottom-right', 'bottom-center', 'bottom-left', 'middle-left', 'top-left'];
     let calibrationZoneIndex = 0;
     let calibrationTargetMoveTime = 2000; // Time it takes target to move from one position to another in milliseconds
