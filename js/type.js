@@ -34,7 +34,7 @@
     showMessage('<span class="blink">Loading eye-tracker...</span>');
 
     window.addEventListener('load', function() {
-        //hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
+        hideMessage(); setUpEyeMsg(false); return; // Just show the layout for development purposes
 
         webgazer.showPredictionPoints(false);
         webgazer.showFaceOverlay(false);
@@ -196,11 +196,6 @@
     let charRotationPause = parseInt(localStorage.getItem('charRotationPause')) >= 1000 ? parseInt(localStorage.getItem('charRotationPause')) : 1500;
     ///////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////
-    // Mode is either 'chat' or 'compose'
-    let eyeMsgMode = ['chat', 'compose'].includes(sessionStorage.getItem('eyeMsgMode')) ? sessionStorage.getItem('eyeMsgMode') : 'chat';
-    ///////////////////////////////////////////////////////////////
-
 
     //////////////////////////////////////////////////////////////
     // Section based typing
@@ -214,24 +209,14 @@
 
     let eyeMsgChars;
 
-    const eyeMsgAlphaKeys = [
+    const eyeMsgKeys = [
         ['A', 'B', 'C', 'D', 'E', 'F'],
         ['G', 'H', 'I', 'J', 'K', 'L'],
         ['M', 'N', 'O', 'P', 'Q', 'R'],
         ['S', 'T', 'U', 'V', 'W', 'X'],
         ['Y', 'Z', '?', '.', ',', '\'', '!'],
+        ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
     ];
-
-    const eyeMsgSpecialKeys = {
-        //'chat': ['_', '⌫', '⏯︎', 'Reset'],
-        //'chat': ['_', '⌫', '↵', '⏯︎', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
-        //'compose': ['_', '⌫', '↵', '⏯︎', '🛑'],
-        'chat': ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
-        'compose': ['_', '⌫', '↵', '<i class="fas fa-pause" data-character="Pause"></i>', '<i class="fas fa-trash" data-character="Empty"></i>', '🛑'],
-    };
-
-    // Page load should not contain any previous text.
-    //document.querySelector('#eye-msg-text').value = '';
 
     // Hard-set the height so contents can scroll
     const setEyeMsgTextBoxHeight = function() {
@@ -262,8 +247,7 @@
         eyeMsgInterval = null;
 
         eyeMsgChars = [];
-        for (const charset of eyeMsgAlphaKeys) eyeMsgChars.push(charset);
-        eyeMsgChars.push(eyeMsgSpecialKeys[eyeMsgMode]);
+        for (const charset of eyeMsgKeys) eyeMsgChars.push(charset);
 
         let html = '';
         const u = document.createElement('div');
@@ -298,8 +282,11 @@
     document.querySelector('#eye-msg-menu .interval').addEventListener('change', function() {
         charRotationPause = this.value * 1000;
         localStorage.setItem('charRotationPause', charRotationPause);
-        clearInterval(eyeMsgInterval);
-        eyeMsgInterval = setInterval(() => { setEyeMsgFocus(); }, charRotationPause);
+
+        // If the rotation is going make sure it uses the new setting.
+        if (document.querySelector('#eye-msg-menu .start-stop[data-action="stop"]')) {
+            startEyeMsg();
+        }
     });
 
     document.querySelectorAll('#eye-msg-menu .quit').forEach(e => { e.addEventListener('click', function() {
@@ -319,16 +306,6 @@
             eyeMsgInterval = setInterval(setEyeMsgFocus, charRotationPause);
         });
     })});
-
-    document.querySelectorAll('#eye-msg-menu .mode').forEach(e => {
-        e.value = eyeMsgMode;
-
-        e.addEventListener('change', function() {
-            eyeMsgMode = this.value;
-            sessionStorage.setItem('eyeMsgMode', eyeMsgMode);
-            startEyeMsg();
-        });
-    });
 
     document.querySelectorAll('#eye-msg-menu .start-stop').forEach(e => {
         e.addEventListener('click', function() {
@@ -381,6 +358,7 @@
         
             document.querySelectorAll('.eye-msg-charsets .highlight').forEach(ee => { ee.classList.remove('highlight'); });
             document.querySelectorAll('#eye-msg-menu .start-stop').forEach(e => { e.setAttribute('data-action', 'start'); });
+            document.querySelectorAll('.eye-msg-charsets [data-character="🛑"], .eye-msg-charsets [data-character="Stop"], .eye-msg-charsets [data-character="Done"]').forEach(e => { e.classList.add('highlight'); }); 
 
             webgazer.clearGazeListener();
         } catch (error) {
@@ -456,9 +434,6 @@
                 // Fire the dialog
                 eyeDialog('stop-dialog');
                 return;
-
-                //stopEyeMsg();
-                //return;
             } else if (['Clear', 'Reset', 'Empty', 'NewMsg', '🗑'].includes(c)) {
                 eyeDialog('empty-dialog');
                 return;
@@ -571,7 +546,7 @@
 
             eyeDialogOptions = d.querySelectorAll('.eye-dialog-option');
             eyeDialogOptionIndex = 0;
-            eyeDialogRotationNum = 0;
+            eyeDialogRotationNum = 1;
             eyeDialogDefaultAction = defaultAction;
 
             if (eyeDialogOptions.length > 0) {
