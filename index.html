@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Eye Type</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="css/site.css">
+
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+            .hidden { display: none; }
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1><i class="fas fa-eye"></i> eye type &mdash; type with your webcam</h1>
+
+                <p id="no-camera-msg" class="note hidden">We were unable to detect a camera on this device. If you would like to use the eye-typewriter please connect a webcam and reload the page.</p>
+            </header>
+
+            <main>
+
+                <p class="main-links">
+                    <a href="instructions.html"><i class="fas fa-info-circle"></i> Instructions</a>
+                    <a href="type.html" class="typewriter-link"><i class="fas fa-keyboard"></i> Typewriter</a>
+                </p>
+
+                <p>This site uses side-to-side eye movements to operate a simple typewriter.</p>
+
+                <h4>Requirements</h4>
+
+                <p>The typewriter needs a webcam, a well-lit room, and a wide enough screen that the camera can see when your eyes turn from one side to the other.</p>
+                <p>Laptops work, even cheap ones if they are newer. Tablets can work too if they are optimized for landscape mode. (e.g. iPad Pro, tablets with a camera on the long edge)</p>
+                <p>Current versions of Chrome, Firefox, Safari and Edge are all compatible.</p>
+            </main>
+        </div>
+
+        <footer>
+            &copy; 2021 Trent Reimer
+
+            <p>Eye tracking by <a href="https://webgazer.cs.brown.edu/" target="_blank">WebGazer.js</a></p>
+
+        </footer>
+
+        <script type="text/javascript" src="js/site.js"></script>
+    </body>
+</html>

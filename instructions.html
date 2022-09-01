@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Eye Type</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="css/site.css">
+
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+            .hidden { display: none; }
+        </style>
+    </head>
+    <body>
+
+        <div id="main">
+            <header>
+                <h1><i class="fas fa-eye"></i> eye type &mdash; type with your webcam</h1>
+
+                <p id="no-camera-msg" class="hidden">We were unable to detect a camera on this device. If you would like to use the eye-typewriter please connect a webcam and reload the page.</p>
+            </header>
+
+            <main>
+                <div class="main-links">
+                    <a href="type.html" class="typewriter-link"><i class="fas fa-keyboard"></i> Typewriter</a>
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                </div>
+
+                <h2>Instructions</h2>
+
+                <p>The webcam needs to watch your eyes. So the device needs to be fixed in place, and it will also help if you can stay still.</p>
+
+                <h4>Calibrating</h4>
+
+                <p><img src="images/calibrate-small.png" style="float: right; margin: 0 10px;"> The eye tracker automatically begins calibrating when it finishes loading. A red dot appears and moves across the screen. All you have to do is watch it.</p>
+
+
+
+                <p>If you have double vision you can wear a patch over one eye. If your head tilts to one side you may also find patching one eye helps this tracker. Experiment and see what works best for you.</p>
+
+                <h4>The typewriter</h4>
+
+                <p>Next the typewriter appears. You will spend most of your time looking at the left side of the screen where the typing occurs. The character grid at the top left is where you choose the characters you want to type. When you choose a character it appears in the message box.</p>
+                <img src="images/layout.png">
+
+
+                <p>Let's type the word <strong>HI</strong>.</p>
+                <p>The character grid automatically highlights one row at a time. When the row with the <strong>H</strong> is highlighted we look to the right side of the screen. There is a checkmark that indicates you have chosen the highlighted item. It should turn green when you look at it.</p>
+                <img src="images/row-select.png">
+
+                <p>After a row has been chosen each of its characters gets highlighted one at a time. We wait for the <strong>H</strong> to get highlighted and then look to the right again to choose it.</p>
+                <img src="images/character-select.png">
+
+                <p>When we look back to the left we see our letter has appeared in the message box and the cursor has moved one place to the right.</p>
+                <img src="images/character-typed.png">
+
+                <h4>Continue</h4>
+
+                <p>That's all there is to it! Repeat the process to type your message.</p>
+
+                <p>The last row contains controls for space, backspace, line return, pause, &quot;delete all&quot; and &quot;stop typing&quot;.</p>
+
+                <p>When you miss the row or character you want, just wait and the highlight rotation will go back to the beginning.</p>
+
+                <h4>Settings</h4>
+
+                <p>At the bottom of the screen there are some clickable controls.</p>
+                <img src="images/settings-menu.png">
+
+                <ol>
+                    <li>You can adjust the highlight rotation speed.</li>
+                    <li>You can recalibrate the eye tracker. e.g. If the user needs to move you may need to recalibrate after.</li>
+                    <li>You can copy the user's text to clipboard so that it can be pasted into an email, card, etc.</li>
+                    <li>You can stop or restart typing.</li>
+                </ol>
+
+                <p>If you are helping someone else use the site please keep in mind that the muscles turning the eye eventually tire of moving in these patterns and it may be a good idea to give the typist a break after a while.</p>
+
+                <img src="images/word-wrap.png">
+
+                <p>Enjoy :)</p>
+
+                <h4>Privacy</h4>
+
+                <p>The eye tracking video feed does not leave your computer.</p>
+
+                <div class="main-links">
+                    <a href="type.html" class="typewriter-link"><i class="fas fa-keyboard"></i> Typewriter</a>
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                </div>
+
+            </main>
+        </div>
+
+        <footer>
+            &copy; 2021 Trent Reimer
+
+            <p>Eye tracking by <a href="https://webgazer.cs.brown.edu/" target="_blank">WebGazer.js</a></p>
+        </footer>
+
+        <script type="text/javascript" src="js/site.js"></script>
+    </body>
+</html>
