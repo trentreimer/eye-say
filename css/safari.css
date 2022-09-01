@@ -1,0 +1,8 @@
+/**
+ * Since Safari does not deign to accurately calculate vh units
+ * we need to ensure percentages can be used.
+ */
+html.safari, .safari body {
+    height: 100%;
+    overflow: hidden;
+}
