@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Eye Type</title>
+        <title>Look.ToType.org</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="css/type.css">
@@ -21,7 +21,7 @@
              * Something as fundamental as accurately measuring the available window height is not beyond their
              * reach and would improve the user interface experience.
              *
-             * While Apple desktop users can switch browsers, iOS users cannot really do that.
+             * While Apple desktop users can switch browsers, iOS users cannot actually do that.
              *
              * iOS runs Safari's rendering and Javascript engines in the background regardless of which browser
              * interface you are using. i.e. If you are using Chrome or Firefox on iOS you are actually using
@@ -29,7 +29,7 @@
              * disable some APIs when you use those other browsers.
              *
              * Safari has done the internet a world of good by breaking Internet Explorer's monopoly.
-             * They should not be working to mimic it.
+             * They should not now be working to mimic it.
              */
 
             const safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -73,8 +73,6 @@
 
             <div id="eye-msg-menu-row">
                 <div id="eye-msg-menu">
-                    <!-- <div>Mode <select class="mode"><option value="chat">Chat</option><option value="compose">Compose</option></select></div> -->
-                    <!-- <div>Speed <input type="number" class="interval" min="1" max="10" step="0.1"> seconds</div> -->
                     <div>Speed <select class="interval"><option value="1">1</option><option value="1.25">1.25</option><option value="1.5">1.5</option><option value="2">2</option><option value="2.5">2.5</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="10">10</option></select> seconds</div>
                     <button class="recalibrate"><i class="fas fa-bullseye"></i> Recalibrate</button>
                     <button class="copy-text">📋 Copy Text</button>
