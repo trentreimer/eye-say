@@ -32,7 +32,7 @@ input[type="submit"] {
 @keyframes blink {
     0% {
         opacity: 0;
-    } 
+    }
 
     30% {
         opacity: 1;
@@ -62,8 +62,8 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100dvw;
+    height: 100dvh;
     background: #000;
     cursor: none;
     z-index: 2;
@@ -159,20 +159,18 @@ input[type="submit"] {
 #message {
     position: absolute;
     top: 25px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    width: 100dvw;
+    text-align: center;
     font-size: 1.5rem;
-    background: black;
     color: #fff;
-    border-radius: 1.75rem;
-    padding: 1rem 1.5rem;
     user-select: none;
     z-index: 3;
 }
 
 #message.middle {
-    top: 50vh;
-    transform: translate(-50%, -50%);
+    top: 50dvh;
+    transform: translateY(-50%);
 }
 
 #message.bottom {
@@ -198,8 +196,8 @@ input[type="submit"] {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100dvw;
+    height: 100dvh;
     font-size: 1.75rem;
     background: #000;
     color: #fff;
@@ -253,20 +251,23 @@ input[type="submit"] {
     flex-wrap: wrap;
 }
 
-.eye-msg-charsets {
-    display: inline-block;
-    text-align: left;
-    color: #888;
-    margin: 10px 0 10px 10px;
+#keyboard:not(.hidden) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0 15px;
+    align-items: flex-start;
+    padding-top: 5px;
 }
 
-.eye-msg-charsets:nth-of-type(n + 2):not(.wrapped) {
+#keyboard > * {
+    padding: 0px;
+    /*border-radius: 10px;*/
+    color: #f0f0f0;
+}
+
+#keyboard > *:nth-of-type(n + 2) {
     padding-left: 10px;
-    border-left: 1px solid #888;
-}
-
-.eye-msg-charsets:nth-of-type(n +2).wrapped {
-    margin-top: -10px;
+    border-left: 1px solid #555;
 }
 
 .eye-msg-charset {
@@ -279,26 +280,30 @@ input[type="submit"] {
     padding: 0.2em 0.35em;
 }
 
-.eye-msg-charsets div.highlight > span,
-.eye-msg-charsets span.highlight,
+#keyboard div.highlight > span,
+#keyboard span.highlight,
 .eye-dialog-option.highlight {
     background: #404050;
     color: #fff;
 }
 
-.eye-msg-charsets span.highlight,
+#keyboard span.highlight,
 .eye-dialog-option.highlight {
     border-radius: 0.15em;
 }
 
-.eye-msg-charsets div.highlight > :first-child {
+#keyboard div.highlight > :first-child {
     border-top-left-radius: 0.15em;
     border-bottom-left-radius: 0.15em;
 }
 
-.eye-msg-charsets div.highlight > :last-child {
+#keyboard div.highlight > :last-child {
     border-top-right-radius: 0.15em;
     border-bottom-right-radius: 0.15em;
+}
+
+#keyboard i {
+    font-style: normal;
 }
 
 #eye-msg {
@@ -408,7 +413,7 @@ button, input, select {
 }
 
 @media screen and (max-width: 12in) {
-    .eye-msg-charsets-parent {
+    #keyboard-parent {
         text-align: left;
         padding: 0;
         border: none;
